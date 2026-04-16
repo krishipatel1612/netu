@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surprise</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<audio id="bgmusic" loop>
+  <source src="music.mp3" type="audio/mp3">
+</audio>
+
+<header>
+<h1>🎁 Surprise Gift</h1>
+</header>
+
+<section>
+
+<h2>Tap to see gift 🎨</h2>
+
+<img src="1ST.jpg">
+
+<br>
+<a href="index.html"><button>⬅ Back Home</button></a>
+
+</section>
+
+</body>
+</html>
+<script>
+let musicStarted = localStorage.getItem("musicStarted");
+
+function startMusic(){
+    let music = document.getElementById("bgmusic");
+
+    if(music && music.paused){
+        music.play().catch(()=>{});
+        localStorage.setItem("musicStarted", "true");
+    }
+}
+
+/* AUTO TRY ON PAGE LOAD */
+window.addEventListener("load", ()=>{
+    if(localStorage.getItem("musicStarted") === "true"){
+        let music = document.getElementById("bgmusic");
+        if(music){
+            music.play().catch(()=>{});
+        }
+    }
+});
+
+/* FIRST CLICK START */
+document.addEventListener("click", ()=>{
+    startMusic();
+});
+</script>

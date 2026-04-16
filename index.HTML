@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Home</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+ <audio id="bgmusic" loop>
+  <source src="music.mp3" type="audio/mp3">
+</audio>
+<!-- MUSIC (NO AUTOPLAY ISSUE) -->
+
+
+<header>
+    <br>
+    <h1>🎉 Happy Birthday Baby Girl 🎂</h1>
+    <p>Welcome to special birthday Netu 😘</p>
+
+  
+
+<section>
+<h2>Menu</h2>
+
+<a href="game.html"><button>📸 Gallery</button></a>
+<a href="cake.html"><button>🎂 Cake</button></a>
+<a href="surprise.html"><button>🎁 Surprise</button></a>
+
+</section>
+
+<section>
+<h2>💌 Wishes</h2>
+<p>✨ Stay happy always</p>
+<p>🌟 You are a little star</p>
+<p>💖 God bless you</p>
+<p>👑 Keep smiling princess</p>
+</section>
+
+<script>
+function startMusic(){
+    let music = document.getElementById("bgmusic");
+
+    music.play().then(()=>{
+        console.log("Music started 🎵");
+    }).catch(()=>{
+        alert("Tap again to start music 🎵");
+    });
+}
+</script>
+
+</body>
+</html>
+<script>
+let musicStarted = localStorage.getItem("musicStarted");
+
+function startMusic(){
+    let music = document.getElementById("bgmusic");
+
+    if(music && music.paused){
+        music.play().catch(()=>{});
+        localStorage.setItem("musicStarted", "true");
+    }
+}
+
+/* AUTO TRY ON PAGE LOAD */
+window.addEventListener("load", ()=>{
+    if(localStorage.getItem("musicStarted") === "true"){
+        let music = document.getElementById("bgmusic");
+        if(music){
+            music.play().catch(()=>{});
+        }
+    }
+});
+
+/* FIRST CLICK START */
+document.addEventListener("click", ()=>{
+    startMusic();
+});
+</script>

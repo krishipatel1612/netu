@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teddy Game</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+background: linear-gradient(135deg,#ffd6ff,#caffbf,#9bf6ff,#ffc6ff);
+}
+
+/* MAIN BOX CENTER */
+.box{
+text-align:center;
+}
+
+/* TITLE */
+h2{
+color:#333;
+margin-bottom:10px;
+}
+
+/* GRID */
+.grid{
+width:300px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin:auto;
+}
+
+/* CARD */
+.card{
+width:90px;
+height:90px;
+background:#fff;
+border-radius:12px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:22px;
+cursor:pointer;
+box-shadow:0 3px 8px rgba(0,0,0,0.2);
+user-select:none;
+transition:0.2s;
+}
+
+.card:active{
+transform:scale(0.9);
+}
+
+/* FINAL SCREEN */
+.final{
+display:none;
+text-align:center;
+}
+
+.bigTeddy{
+font-size:120px;
+}
+
+.msg{
+font-size:26px;
+color:#ff4081;
+font-weight:bold;
+margin-top:10px;
+}
+
+/* WRONG SHAKE */
+.wrong{
+animation:shake 0.3s;
+}
+
+@keyframes shake{
+0%{transform:translateX(0);}
+25%{transform:translateX(-5px);}
+50%{transform:translateX(5px);}
+75%{transform:translateX(-5px);}
+100%{transform:translateX(0);}
+}
+</style>
+</head>
+
+<body>
+<audio id="bgmusic" loop>
+  <source src="music.mp3" type="audio/mp3">
+</audio>
+<div class="box" id="gameBox">
+
+<h2>🧸 Teddy Number Game 🎮</h2>
+
+<div class="grid" id="grid"></div>
+
+</div>
+
+<div class="final" id="final">
+    <div class="bigTeddy">🧸</div>
+    <div class="msg">For You Princess 🎀</div>
+</div>
+
+<script>
+
+let current = 9;
+
+// shuffle
+let nums = [1,2,3,4,5,6,7,8,9];
+nums.sort(()=>Math.random()-0.5);
+
+let grid = document.getElementById("grid");
+
+nums.forEach(n=>{
+    let div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = n;
+    div.dataset.num = n;
+
+    div.onclick = ()=>handle(div);
+
+    grid.appendChild(div);
+});
+
+function handle(card){
+
+let num = parseInt(card.dataset.num);
+
+if(num === current){
+
+    card.style.background = "#c8f7c5";
+    card.innerHTML = "✔";
+    card.style.pointerEvents = "none";
+
+    current--;
+
+    // POPUP HINT
+    if(current > 0){
+        setTimeout(()=>{
+            alert("👉 Next number is: " + current);
+        },200);
+    }
+
+    // GAME END
+    if(current === 0){
+        document.getElementById("gameBox").style.display="none";
+        document.getElementById("final").style.display="block";
+    }
+
+}else{
+
+    card.classList.add("wrong");
+    setTimeout(()=>card.classList.remove("wrong"),300);
+
+    alert("❌ Wrong card! Try again.");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
+<script>
+let musicStarted = localStorage.getItem("musicStarted");
+
+function startMusic(){
+    let music = document.getElementById("bgmusic");
+
+    if(music && music.paused){
+        music.play().catch(()=>{});
+        localStorage.setItem("musicStarted", "true");
+    }
+}
+
+/* AUTO TRY ON PAGE LOAD */
+window.addEventListener("load", ()=>{
+    if(localStorage.getItem("musicStarted") === "true"){
+        let music = document.getElementById("bgmusic");
+        if(music){
+            music.play().catch(()=>{});
+        }
+    }
+});
+
+/* FIRST CLICK START */
+document.addEventListener("click", ()=>{
+    startMusic();
+});
+</script>
